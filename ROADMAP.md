@@ -4,36 +4,36 @@ A production-grade, 11-step development roadmap for an asynchronous, page-aligne
 
 ---
 
-## - [ ] Task 01: Core Primitives & SIMD Distance Metrics Engine
+## - [x] Task 01: Core Primitives & SIMD Distance Metrics Engine
 * **Scope:** Implement foundational data structures (`Vector`, `NodeId`, `DistanceMetric`) and SIMD-accelerated distance algorithms ($L_2$ Euclidean, Cosine, Inner Product).
 * **Technical Details:** Use `std::simd` or platform intrinsic crates (`packed_simd` / AVX2 / NEON) for 128/256/512-bit vector math on `f32` slices.
 * **Acceptance Criteria:**
-  - [ ] Computes $L_2$ and Cosine distances for 1536-dimensional vectors in sub-microsecond time.
-  - [ ] Automatically falls back to scalar calculations if SIMD hardware features are absent.
+  - [x] Computes $L_2$ and Cosine distances for 1536-dimensional vectors in sub-microsecond time.
+  - [x] Automatically falls back to scalar calculations if SIMD hardware features are absent.
 * **Testing Guidelines:**
   - *Unit Tests:* Compare SIMD output precision against standard `f32::dot` calculations across $10^6$ random vector pairs (epsilon error $< 10^{-5}$).
   - *Benchmark:* Add `criterion` benchmarks measuring QPS for 384, 768, and 1536 dimension inputs.
 
 ---
 
-## - [ ] Task 02: Product Quantization (PQ) Compression Module
+## - [x] Task 02: Product Quantization (PQ) Compression Module
 * **Scope:** Build an in-RAM vector compressor using $k$-means clustering to convert float vectors into short byte codes.
 * **Technical Details:** Segment $D$-dimensional vectors into $M$ sub-vectors. Run $k$-means ($k=256$) to generate codebooks. Construct Asymmetric Distance Computation (ADC) lookup tables in memory.
 * **Acceptance Criteria:**
-  - [ ] Compresses 1536-dimensional `f32` vectors ($6,144$ bytes) down to $64$–$128$ bytes ($16\times$–$96\times$ compression ratio).
-  - [ ] ADC table lookups run completely in RAM with zero heap allocations during search.
+  - [x] Compresses 1536-dimensional `f32` vectors ($6,144$ bytes) down to $64$–$128$ bytes ($16\times$–$96\times$ compression ratio).
+  - [x] ADC table lookups run completely in RAM with zero heap allocations during search.
 * **Testing Guidelines:**
   - *Unit Tests:* Verify codebook generation and assert exact byte encoding/decoding parity for known cluster centers.
   - *Integration Test:* Measure mean squared error (MSE) between full-precision distance and PQ estimated distance on a 10,000-vector dataset.
 
 ---
 
-## - [ ] Task 03: 4 KB Page-Aligned Sector Serialization Layout
+## - [x] Task 03: 4 KB Page-Aligned Sector Serialization Layout
 * **Scope:** Design zero-copy binary disk sector structures aligned strictly to 4,096-byte boundaries for direct NVMe SSD I/O.
 * **Technical Details:** Utilize `zerocopy` / `bytemuck` with `#[repr(C, align(4096))]`. Store metadata, uncompressed `f32` vector, and adjacency list within sector boundaries.
 * **Acceptance Criteria:**
-  - [ ] Every graph node block maps directly to a 4 KB physical page boundary without byte padding bleed across pages.
-  - [ ] Zero heap allocations required when casting raw sector byte slices into node structs (`zerocopy::FromBytes`).
+  - [x] Every graph node block maps directly to a 4 KB physical page boundary without byte padding bleed across pages.
+  - [x] Zero heap allocations required when casting raw sector byte slices into node structs (`zerocopy::FromBytes`).
 * **Testing Guidelines:**
   - *Unit Tests:* Assert `std::mem::align_of::<DiskNode>() == 4096` and `std::mem::size_of::<DiskNode>() % 4096 == 0`.
   - *Roundtrip Test:* Write synthetic nodes to file, read back raw bytes, and assert complete field identity.

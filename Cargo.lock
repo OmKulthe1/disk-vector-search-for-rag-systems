@@ -273,7 +273,9 @@ version = "0.1.0"
 dependencies = [
  "criterion",
  "rand",
+ "rayon",
  "thiserror",
+ "zerocopy",
 ]
 
 [[package]]
