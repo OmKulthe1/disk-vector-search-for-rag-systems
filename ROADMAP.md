@@ -40,12 +40,12 @@ A production-grade, 11-step development roadmap for an asynchronous, page-aligne
 
 ---
 
-## - [ ] Task 04: In-Memory Vamana Graph Construction Engine
+## - [x] Task 04: In-Memory Vamana Graph Construction Engine
 * **Scope:** Implement the single-layer Vamana graph indexing algorithm using directional $\alpha$-pruning.
 * **Technical Details:** Greedy graph traversal from a medoid node. Candidate pruning using $\alpha$-distance threshold ($\alpha \ge 1.0$) to establish long-range shortcut edges alongside local cluster edges.
 * **Acceptance Criteria:**
-  - [ ] Graph out-degree is strictly bounded by parameter $R_{max}$ (e.g., $R_{max} = 64$).
-  - [ ] No orphan nodes or disconnected subgraphs exist; all nodes are reachable from the medoid entry point.
+  - [x] Graph out-degree is strictly bounded by parameter $R_{max}$ (e.g., $R_{max} = 64$).
+  - [x] No orphan nodes or disconnected subgraphs exist; all nodes are reachable from the medoid entry point.
 * **Testing Guidelines:**
   - *Graph Integrity Test:* Perform breadth-first search (BFS) from medoid to verify 100% node reachability on a 5,000-vector dataset.
   - *Property Tests:* Validate that increasing $\alpha$ decreases average graph path length (diameter).
